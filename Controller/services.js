@@ -19,17 +19,17 @@ const getPosts = async (req, res) => {
     const getRows = await googleSheets.spreadsheets.values.get({
       auth,
       spreadsheetId,
-      range: "Sheet1!A:D",
+      range: "Sheet1!A:E",
     });
     res.status(200).json(getRows.data.values);
   } catch (error) {
-    res.status(404).json({ message: error.message });
-    console.log("error" + error.message);
+    res.status(404).json({ messitem: error.messitem });
+    console.log("error" + error.messitem);
   }
 };
 
 const createPosts = async (req, res) => {
-  const { name, age, salary, hobby } = req.body;
+  const { date, item, income, expense,accounttype } = req.body;
 
   const auth = new google.auth.GoogleAuth({
     keyFile: "credentials.json",
@@ -57,14 +57,14 @@ const createPosts = async (req, res) => {
     range: "Sheet1!A:B",
     valueInputOption: "USER_ENTERED",
     resource: {
-      values: [[name, age, salary, hobby]],
+      values: [[date, item, income, expense,accounttype]],
     },
   });
 
   res.send("Successfully submitted! Thank you!");
 };
 const UpdatePosts = async (req, res) => {
-  const { name, age, salary, hobby } = req.body;
+  const { date, item, income, expense,accounttype } = req.body;
   console.log("req.body", req.body);
   const { range } = req.params;
   console.log("range", range);
@@ -96,7 +96,7 @@ const UpdatePosts = async (req, res) => {
     valueInputOption: "USER_ENTERED",
     resource: {
         majorDimension: "ROWS",
-      values: [[name, age, salary, hobby]],
+      values: [[date, item, income, expense,accounttype]],
     },
   });
 
